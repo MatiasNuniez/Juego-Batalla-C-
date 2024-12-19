@@ -3,26 +3,38 @@
     public string Nombre { get; set; }
     public int Puntos { get; set; }
     public int PoderAtaque {  get; set; }
-    public int Vida { get; set; }
-    public Criatura(string nombre, int puntos, int poderataque, int vida)
+    public Criatura(string nombre, int puntos, int poderataque)
     {
         this.Nombre = nombre;
         this.Puntos = puntos;
         this.PoderAtaque = poderataque;
-        this.Vida = vida;
     }
     public virtual void Atacar(Criatura enemigo)
     {
         if (Puntos > 0)
         {
-            int dano = enemigo.RecibirAtaque(15);
+            int dano = enemigo.RecibirAtaque(PoderAtaque);
+            if (Puntos <= 0)
+            {
+                Puntos = 0;
+                Console.WriteLine(Nombre + "Ha muerto");
+            }
             Console.WriteLine(Nombre + "Fue atacado con " + dano + "por: " + enemigo.Nombre);
+        }
+        else
+        {
+            Console.Write("No posee los puntos necesarios");
         }
     }
 
     public virtual int RecibirAtaque(int dano)
     {
-        Vida = Vida - dano;
+        if (Puntos < dano)
+        {
+            Puntos = 0;
+
+        }
+        Puntos -= dano;
         return dano;
     }
 
